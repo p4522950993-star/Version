@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Modern Registration Form</title>
+<title>Ultimate Registration</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 
 <style>
 * {
@@ -13,101 +16,125 @@
   font-family: 'Poppins', sans-serif;
 }
 
+/* Green Background */
 body {
   height: 100vh;
-  background: linear-gradient(135deg, #667eea, #764ba2);
   display: flex;
   justify-content: center;
   align-items: center;
+  background: linear-gradient(135deg, #00b09b, #96c93d);
 }
 
 /* Container */
 .container {
   display: flex;
   width: 900px;
-  background: #fff;
-  border-radius: 15px;
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
 }
 
-/* Left Side */
+/* Left Panel (Blue) */
 .left {
   width: 40%;
-  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  background: linear-gradient(135deg, #2193b0, #6dd5ed);
   color: white;
   padding: 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 .left h2 {
-  font-size: 28px;
   margin-bottom: 10px;
 }
 
-.left p {
-  font-size: 14px;
-  opacity: 0.9;
-}
-
-/* Right Side */
+/* Right Panel */
 .right {
   width: 60%;
   padding: 40px;
+  background: white;
+  position: relative;
 }
 
-.right h2 {
+/* Toggle */
+.toggle {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  cursor: pointer;
+}
+
+/* Input Box */
+.input-box {
+  position: relative;
   margin-bottom: 20px;
 }
 
-/* Input Fields */
-.input-box {
-  margin-bottom: 15px;
+.input-box i {
+  position: absolute;
+  left: 10px;
+  top: 12px;
+  color: #2193b0;
 }
 
 .input-box input,
 .input-box select {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  padding: 12px 35px;
+  border: none;
+  border-bottom: 2px solid #ccc;
   outline: none;
   transition: 0.3s;
 }
 
-.input-box input:focus,
-.input-box select:focus {
-  border-color: #667eea;
+/* Focus (Blue) */
+.input-box input:focus {
+  border-color: #2193b0;
 }
 
-/* Checkbox */
-.checkbox {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
+/* Password Eye */
+.eye {
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  cursor: pointer;
 }
 
-.checkbox input {
-  margin-right: 8px;
+/* Strength Bar */
+.strength {
+  height: 5px;
+  border-radius: 5px;
+  margin-top: 5px;
+  background: #ddd;
 }
 
-/* Button */
+.strength div {
+  height: 100%;
+  width: 0%;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+/* Button (Blue) */
 button {
   width: 100%;
   padding: 12px;
   border: none;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #2193b0, #6dd5ed);
   color: white;
-  border-radius: 8px;
-  font-size: 16px;
+  border-radius: 30px;
   cursor: pointer;
   transition: 0.3s;
 }
 
 button:hover {
-  opacity: 0.9;
+  transform: scale(1.05);
+  box-shadow: 0 5px 20px rgba(33,147,176,0.5);
+}
+
+/* Checkbox */
+.checkbox {
+  margin-bottom: 15px;
 }
 
 /* Responsive */
@@ -127,35 +154,41 @@ button:hover {
 
 <div class="container">
 
-  <!-- Left Panel -->
   <div class="left">
-    <h2>Welcome!</h2>
-    <p>Create your account and start your journey with us.</p>
+    <h2>💙 Welcome</h2>
+    <p>Create your account easily</p>
   </div>
 
-  <!-- Right Panel -->
   <div class="right">
+
     <h2>Register</h2>
 
     <form onsubmit="return validateForm()">
 
       <div class="input-box">
-        <input type="text" id="name" placeholder="Full Name" required>
+        <i class="fa fa-user"></i>
+        <input type="text" required placeholder="Full Name">
       </div>
 
       <div class="input-box">
-        <input type="email" id="email" placeholder="Email Address" required>
+        <i class="fa fa-envelope"></i>
+        <input type="email" required placeholder="Email">
       </div>
 
       <div class="input-box">
-        <input type="password" id="password" placeholder="Password" required>
+        <i class="fa fa-lock"></i>
+        <input type="password" id="password" required placeholder="Password" onkeyup="checkStrength()">
+        <span class="eye" onclick="togglePassword()">👁️</span>
+        <div class="strength"><div id="strength-bar"></div></div>
       </div>
 
       <div class="input-box">
-        <input type="tel" placeholder="Phone Number" required>
+        <i class="fa fa-phone"></i>
+        <input type="tel" required placeholder="Phone">
       </div>
 
       <div class="input-box">
+        <i class="fa fa-book"></i>
         <select required>
           <option value="">Select Course</option>
           <option>Frontend</option>
@@ -165,33 +198,57 @@ button:hover {
       </div>
 
       <div class="checkbox">
-        <input type="checkbox" id="terms">
-        <label for="terms">I accept Terms & Conditions</label>
+        <input type="checkbox" id="terms"> Accept Terms
       </div>
 
       <button type="submit">Register</button>
 
     </form>
+
   </div>
 
 </div>
 
 <script>
+function togglePassword() {
+  let pass = document.getElementById("password");
+  pass.type = pass.type === "password" ? "text" : "password";
+}
+
+function checkStrength() {
+  let val = document.getElementById("password").value;
+  let bar = document.getElementById("strength-bar");
+
+  if (val.length < 4) {
+    bar.style.width = "25%";
+    bar.style.background = "red";
+  } else if (val.length < 6) {
+    bar.style.width = "50%";
+    bar.style.background = "orange";
+  } else if (val.length < 8) {
+    bar.style.width = "75%";
+    bar.style.background = "yellow";
+  } else {
+    bar.style.width = "100%";
+    bar.style.background = "green";
+  }
+}
+
 function validateForm() {
-  let password = document.getElementById("password").value;
+  let pass = document.getElementById("password").value;
   let terms = document.getElementById("terms").checked;
 
-  if (password.length < 6) {
-    alert("Password must be at least 6 characters");
+  if (pass.length < 6) {
+    alert("Password too short!");
     return false;
   }
 
   if (!terms) {
-    alert("Please accept Terms & Conditions");
+    alert("Accept terms first!");
     return false;
   }
 
-  alert("Registration Successful!");
+  alert("🎉 Registered Successfully!");
   return true;
 }
 </script>
