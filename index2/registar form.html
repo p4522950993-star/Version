@@ -1,0 +1,252 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ultimate Registration</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+  
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #00b09b, #96c93d);
+}
+
+.container {
+  display: flex;
+  width: 900px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+.left {
+  width: 40%;
+  background: linear-gradient(135deg, #2193b0, #6dd5ed);
+  color: white;
+  padding: 40px;
+}
+
+.left h2 {
+  margin-bottom: 10px;
+}
+
+.right {
+  width: 60%;
+  padding: 40px;
+  background: white;
+  position: relative;
+}
+
+.toggle {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.input-box {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input-box i {
+  position: absolute;
+  left: 10px;
+  top: 12px;
+  color: #2193b0;
+}
+
+.input-box input,
+.input-box select {
+  width: 100%;
+  padding: 12px 35px;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  outline: none;
+  transition: 0.3s;
+}
+
+/* Focus (Blue) */
+.input-box input:focus {
+  border-color: #2193b0;
+}
+
+/* Password Eye */
+.eye {
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  cursor: pointer;
+}
+
+/* Strength Bar */
+.strength {
+  height: 5px;
+  border-radius: 5px;
+  margin-top: 5px;
+  background: #ddd;
+}
+
+.strength div {
+  height: 100%;
+  width: 0%;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+/* Button (Blue) */
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: linear-gradient(135deg, #2193b0, #6dd5ed);
+  color: white;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 20px rgba(33,147,176,0.5);
+}
+
+/* Checkbox */
+.checkbox {
+  margin-bottom: 15px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    width: 90%;
+  }
+  .left, .right {
+    width: 100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="left">
+    <h2>💙 Welcome</h2>
+    <p>Create your account easily</p>
+  </div>
+
+  <div class="right">
+
+    <h2>Register</h2>
+
+    <form onsubmit="return validateForm()">
+
+      <div class="input-box">
+        <i class="fa fa-user"></i>
+        <input type="text" required placeholder="Full Name">
+      </div>
+
+      <div class="input-box">
+        <i class="fa fa-envelope"></i>
+        <input type="email" required placeholder="Email">
+      </div>
+
+      <div class="input-box">
+        <i class="fa fa-lock"></i>
+        <input type="password" id="password" required placeholder="Password" onkeyup="checkStrength()">
+        <span class="eye" onclick="togglePassword()">👁️</span>
+        <div class="strength"><div id="strength-bar"></div></div>
+      </div>
+
+      <div class="input-box">
+        <i class="fa fa-phone"></i>
+        <input type="tel" required placeholder="Phone">
+      </div>
+
+      <div class="input-box">
+        <i class="fa fa-book"></i>
+        <select required>
+          <option value="">Select Course</option>
+          <option>Frontend</option>
+          <option>Backend</option>
+          <option>Full Stack</option>
+        </select>
+      </div>
+
+      <div class="checkbox">
+        <input type="checkbox" id="terms"> Accept Terms
+      </div>
+
+      <button type="submit">Register</button>
+
+    </form>
+
+  </div>
+
+</div>
+
+<script>
+function togglePassword() {
+  let pass = document.getElementById("password");
+  pass.type = pass.type === "password" ? "text" : "password";
+}
+
+function checkStrength() {
+  let val = document.getElementById("password").value;
+  let bar = document.getElementById("strength-bar");
+
+  if (val.length < 4) {
+    bar.style.width = "25%";
+    bar.style.background = "red";
+  } else if (val.length < 6) {
+    bar.style.width = "50%";
+    bar.style.background = "orange";
+  } else if (val.length < 8) {
+    bar.style.width = "75%";
+    bar.style.background = "yellow";
+  } else {
+    bar.style.width = "100%";
+    bar.style.background = "green";
+  }
+}
+
+function validateForm() {
+  let pass = document.getElementById("password").value;
+  let terms = document.getElementById("terms").checked;
+
+  if (pass.length < 6) {
+    alert("Password too short!");
+    return false;
+  }
+
+  if (!terms) {
+    alert("Accept terms first!");
+    return false;
+  }
+
+  alert("🎉 Registered Successfully!");
+  return true;
+}
+</script>
+
+</body>
+</html>
